@@ -12,7 +12,7 @@ export default function summaryRoute(req, res) {
     const customers = users.filter((x) => !x.isAdmin);
     const admins = users.filter((x) => x.isAdmin);
     const totalMoney = customers.reduce((pre, cur) => {
-      return pre + (cur.money != null ? cur.moeny : 0);
+      return pre + (cur.money != null ? cur.money : 0);
     }, 0);
 
     //return response
