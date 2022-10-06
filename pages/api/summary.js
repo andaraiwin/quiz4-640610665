@@ -9,7 +9,7 @@ export default function summaryRoute(req, res) {
       return res.status(403).json({ ok: false, message: "Permission denied" });
 
     const users = readUsersDB();
-    const customers = user.filter((x) => !x.isAdmin);
+    const customers = users.filter((x) => !x.isAdmin);
     const admins = users.filter((x) => x.isAdmin);
     const totalMoney = customers.reduce((pre, cur) => {
       return pre + (cur.money != null ? cur.moeny : 0);
