@@ -18,11 +18,35 @@ export default function loginRoute(req, res) {
 
     const users = readUsersDB();
     //find user with username & password
+    const UserFinder = users.find(
+      (x) => x.username === username && bcrypt.compareSync(password, x.password)
+    );
 
-    // return res.status(400).json({ ok: false, message: "Invalid Username or Password" });
+    if (!UserFinder)
+      return res
+        .status(400)
+        .json({ ok: false, message: "Invalid Username or Password" });
 
     const secret = process.env.JWT_SECRET;
     //create token and return response
+    const token = jwt.sign(
+      {
+        username: UserFinder.username,
+        isAdmin: UserFinder.isAdmin,
+      },
+      secret,
+      {
+        expiresIn: "1800s",
+      }
+    );
+
+    //return response
+    return res.json({
+      ok: true,
+      username: UserFinder.username,
+      isAdmin: UserFinder.isAdmin,
+      token,
+    });
   } else {
     return res.status(400).json({ ok: false, message: "Invalid HTTP Method" });
   }
